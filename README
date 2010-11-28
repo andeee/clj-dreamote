@@ -4,7 +4,7 @@ A simple clojure library to remote control your dreambox
 
 ## Usage
 
-; example first press 1 two times, then ok 
+; example: first press 1 two times, then OK
 ; when in tv-mode zaps to channel 11
 (use 'clj-dreamote.core)
 (press 1 2)
