@@ -1,0 +1,19 @@
+# clj-dreamote
+
+A simple clojure library to remote control your dreambox
+
+## Usage
+
+; example first press 1 two times, then ok 
+; when in tv-mode zaps to channel 11
+(use 'clj-dreamote.core)
+(press 1 2)
+(press 'ok)
+
+For available press symbols see core.clj
+
+## License
+
+Copyright (C) 2010 Andreas Wurzer
+
+Distributed under the Eclipse Public License, the same as Clojure.
