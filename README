@@ -11,7 +11,8 @@ A simple clojure library to remote control your dreambox
   (press 1 2)
   (press 'ok))
 
-For available press symbols see core.clj
+For available press symbols see src/core.clj
+For more examples see scripts folder
 
 ## License
 
