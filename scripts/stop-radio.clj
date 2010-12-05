@@ -1,5 +1,5 @@
 (use 'clj-dreamote.core)
-(do
+(with-remote {:host "dm600pvr" :auth ["root" "dreambox"]}
   (press 'exit 3)
   (press 1)
   (press 'ok)
