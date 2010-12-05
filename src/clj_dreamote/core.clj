@@ -1,5 +1,6 @@
 (ns clj-dreamote.core
-  (:require [clj-http.client :as client]))
+  (:require [clj-http.client :as client])
+  (:require [clojure.contrib.except :as except]))
 
 (def remote
   {                         :power 116
@@ -23,12 +24,30 @@
 :tv    385 :radio 377 :text 66  :help 138
 :sharp 128 :O     167})
 
+(def *dreamote-conn* {:host "ip-or-hostname" :auth ["user" "pwd"]})
+
 (defn send-key! [keycode]
-  (client/get (str "http://dm600pvr/cgi-bin/rc?" keycode)
-	      {:basic-auth ["root" "dreambox"]}))
+  (client/get (str "http://" (:host *dreamote-conn*) "/cgi-bin/rc?" keycode)
+	      {:basic-auth (:auth *dreamote-conn*)}))
+
+(defn to-keyword [button-form]
+  (cond
+   (symbol? button-form) (keyword (name button-form))
+   (keyword? button-form) button-form
+   :else (keyword (str button-form))))
+
+(defn to-keycode [button-form]
+  (let [button-keyword (to-keyword button-form)]
+    (except/throw-if (not (contains? button-keyword remote))
+		     (str "button " (name button-keyword) " doesn't exist on remote"))
+    (get remote button-keyword)))
 
 (defn press
   ([button] (press button 1))
   ([button times]
      (dotimes [_ times]
-       (send-key! (get remote (keyword (str button)))))))
+       (send-key! (to-keycode button)))))
+
+(defmacro with-remote [dreamote-conn & forms]
+  `(binding [*dreamote-conn* ~dreamote-conn]
+     (do ~@forms)))
