@@ -38,7 +38,7 @@
 
 (defn to-keycode [button-form]
   (let [button-keyword (to-keyword button-form)]
-    (except/throw-if (not (contains? button-keyword remote))
+    (except/throw-if (not (contains? remote button-keyword))
 		     (str "button " (name button-keyword) " doesn't exist on remote"))
     (get remote button-keyword)))
 
